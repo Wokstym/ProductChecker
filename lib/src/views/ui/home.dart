@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/views/ui/record_editor.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:web3dart/web3dart.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -19,9 +17,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Client httpClient;
-  Web3Client ethClient;
-
   bool _supportsNFC = false;
   Record _valueRed;
   String _errorMessage;
@@ -29,21 +24,17 @@ class _MyHomePageState extends State<MyHomePage> {
   StreamSubscription<NDEFMessage> _stream;
   RecordEditor recordEditor;
 
-  final myAddress = "";
-
   bool _hasClosedWriteDialog = false;
 
   @override
   void initState() {
     super.initState();
-    httpClient = Client();
     recordEditor = new RecordEditor();
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
         _supportsNFC = isSupported;
       });
     });
-    // ethClient = Web3Client(myAddress)
   }
 
   /* writing */
