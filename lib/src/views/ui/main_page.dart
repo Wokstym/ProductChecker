@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:product_check/src/services/contract_service_impl.dart';
+import 'package:product_check/src/services/contract_service_interface.dart';
 import 'package:product_check/src/views/ui/nfc_page.dart';
 
 import 'blockchain_requests_page.dart';
@@ -38,9 +40,24 @@ class MainPage extends StatelessWidget {
 }
 
 Future navigateToBlockchainPage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => BlockchainPage(title: "Get Product Owner")));
+  String myAddress = "0xb88Ae3f85603bB13674ae34Be26Fbe1675ff2647";
+  String contractAddress = "0x3d890b7D6E34220AAE2DDc9F1979D4ADDaDae9E5";
+  String infuraURL =
+      "https://kovan.infura.io/v3/c6d67a2b8ed4454283858d137db7593f";
+  String contractName = "POMS";
+  ContractService contractService = new ContractServiceImpl(
+      myAddress, contractAddress, infuraURL, contractName);
+
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BlockchainPage(
+                title: "Get Product Owner",
+                contractService: contractService,
+              )));
 }
 
 Future navigateToNFCPage(context) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => NFCPage(title: "NFC page")));
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => NFCPage(title: "NFC page")));
 }
