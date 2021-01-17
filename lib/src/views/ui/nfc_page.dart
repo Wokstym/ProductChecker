@@ -7,16 +7,16 @@ import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/views/ui/record_editor.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class NFCPage extends StatefulWidget {
+  NFCPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _NFCPageState createState() => _NFCPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _NFCPageState extends State<NFCPage> {
   bool _supportsNFC = false;
   Record _valueRed;
   String _errorMessage;
