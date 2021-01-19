@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:product_check/src/views/ui/nfc_page.dart';
+import 'package:product_check/src/views/ui/main_page.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -7,11 +7,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: NFCPage(title: 'NFC Scan'),
+      home: MainPage(),
     );
   }
 }
