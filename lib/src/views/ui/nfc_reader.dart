@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:product_check/src/models/record.dart';
+import 'package:product_check/src/utils/component_utild.dart';
 
 class NFCReader extends StatefulWidget {
   NFCReader({Key key, this.title}) : super(key: key);
@@ -89,15 +90,15 @@ class _NFCReaderState extends State<NFCReader> {
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 children: [
-                  SizedBox(height: screenHeightPercent(context, 20)),
+                  SizedBox(height: ComponentUtils.screenHeightPercent(context, 20)),
                   Padding(
                       padding: EdgeInsets.all(16),
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
-                              boxShadow: boxShadow()),
-                          height: screenHeightPercent(context, 40),
+                              boxShadow: ComponentUtils.boxShadow()),
+                          height: ComponentUtils.screenHeightPercent(context, 40),
                           child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
@@ -151,23 +152,4 @@ class _NFCReaderState extends State<NFCReader> {
     );
   }
 
-  double screenHeightPercent(BuildContext context, int percent) =>
-      (MediaQuery.of(context).size.height / 100 * percent);
-
-  List<BoxShadow> boxShadow() {
-    return [
-      const BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.1),
-        blurRadius: 25.0,
-        spreadRadius: -5.0,
-        offset: Offset(0.0, 20.0),
-      ),
-      const BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.04),
-        blurRadius: 10.0,
-        spreadRadius: -5.0,
-        offset: Offset(0.0, 10.0),
-      ),
-    ];
-  }
 }
