@@ -52,6 +52,15 @@ flutter:
   assets:
     - assets/
   #   - images/a_dot_ham.jpeg
+  fonts:
+    - family: ProductSans
+      fonts:
+        - asset: fonts/product_sans/Product-Sans-Regular.ttf
+        - asset: fonts/product_sans/Product-Sans-Italic.ttf
+          style: italic
+        - asset: fonts/product_sans/Product-Sans-Bold.ttf
+          weight: 600
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

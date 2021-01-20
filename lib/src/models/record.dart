@@ -15,4 +15,9 @@ class Record {
   String getNFCFormattedString() {
     return productCode + ";" + manufacturerCode;
   }
+
+  @override
+  String toString() {
+    return 'Record{productCode: $productCode, manufacturerCode: $manufacturerCode}';
+  }
 }

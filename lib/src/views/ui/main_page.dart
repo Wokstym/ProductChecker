@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/services/contract_service_impl.dart';
 import 'package:product_check/src/services/contract_service_interface.dart';
-import 'package:product_check/src/views/ui/nfc_page.dart';
+import 'package:product_check/src/views/ui/nfc_writer.dart';
+import 'package:product_check/src/views/ui/nfc_reader.dart';
 
 import 'blockchain_requests_page.dart';
 
@@ -27,9 +29,17 @@ class MainPage extends StatelessWidget {
             RaisedButton(
               textColor: Colors.white,
               color: Colors.blue,
-              child: Text('Go to NFC page'),
+              child: Text('Go to Read NFC page'),
               onPressed: () {
-                navigateToNFCPage(context);
+                navigateToReadNFCPage(context);
+              },
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text('Go to write NFC page'),
+              onPressed: () {
+                navigateToWriteNFCPage(context);
               },
             )
           ],
@@ -57,7 +67,23 @@ Future navigateToBlockchainPage(context) async {
               )));
 }
 
-Future navigateToNFCPage(context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => NFCPage(title: "NFC page")));
+Future navigateToReadNFCPage(context) async {
+  Record result = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => NFCReader(title: "NFC page")));
+
+  if (result == null)
+    print("Nothing scanned");
+  else {
+    print(result.toString());
+  }
+}
+
+Future navigateToWriteNFCPage(BuildContext context) async {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => NFCWriter(
+                title: "NFC page",
+                record: Record("2342346463", "22342643622"),
+              )));
 }
