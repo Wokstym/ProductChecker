@@ -84,6 +84,6 @@ Future navigateToWriteNFCPage(BuildContext context) async {
       MaterialPageRoute(
           builder: (context) => NFCWriter(
                 title: "NFC page",
-                record: Record("2342346463", "22342643622"),
+                record: Record("212321", "22342643622"),
               )));
 }

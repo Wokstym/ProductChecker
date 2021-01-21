@@ -4,10 +4,10 @@ class ComponentUtils {
   static double screenHeightPercent(BuildContext context, int percent) =>
       (MediaQuery.of(context).size.height / 100 * percent);
 
-  static List<BoxShadow> boxShadow() {
+  static List<BoxShadow> boxShadow({Color color}) {
     return [
-      const BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.1),
+       BoxShadow(
+        color: color ?? Color.fromRGBO(0, 0, 0, 0.1),
         blurRadius: 25.0,
         spreadRadius: -5.0,
         offset: Offset(0.0, 20.0),

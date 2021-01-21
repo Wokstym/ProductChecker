@@ -4,7 +4,6 @@ import 'package:product_check/src/services/contract_service_interface.dart';
 import 'package:web3dart/web3dart.dart';
 
 class ContractServiceImpl implements ContractService {
-
   static final String contractPath = "assets/ABI.json";
   final String myAddress;
   final String infuraURL;
@@ -14,8 +13,8 @@ class ContractServiceImpl implements ContractService {
   Client httpClient;
   Web3Client ethClient;
 
-  ContractServiceImpl(this.myAddress, this.contractAddress, this.infuraURL,
-      this.contractName) {
+  ContractServiceImpl(
+      this.myAddress, this.contractAddress, this.infuraURL, this.contractName) {
     httpClient = Client();
     ethClient = Web3Client(infuraURL, httpClient);
   }
@@ -26,16 +25,14 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  String getCurrentOwnerAddress(BigInt productCode) {
-    getProductOwner(productCode).then((value) => {
-      productOwner = value
-    });
+  Future<String> getCurrentOwnerAddress(BigInt productCode) async {
+    String value = await getProductOwner(productCode);
+    productOwner = value;
     return productOwner;
   }
 
   Future<String> getProductOwner(BigInt productCode) async {
-    List<dynamic> response =
-    await query("getCurrentOwner", [productCode]);
+    List<dynamic> response = await query("getCurrentOwner", [productCode]);
     return response[0].toString();
   }
 
