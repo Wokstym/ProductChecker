@@ -29,7 +29,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   web3dart: ^2.0.0-dev.9
-  velocity_x: ^0.4.1
   http: ^0.12.2
   nfc_in_flutter: ^2.0.5
 
