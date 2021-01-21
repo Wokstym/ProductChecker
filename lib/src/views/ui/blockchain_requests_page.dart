@@ -85,7 +85,7 @@ class _BlockchainPageState extends State<BlockchainPage> {
               Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child:
-                      new Text("Scan your product and verify Owner's address",
+                      new Text("Scan product and verify owner's address",
                           style: new TextStyle(
                             fontSize: 16.0,
                             color: Colors.grey,
