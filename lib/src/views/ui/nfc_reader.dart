@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:product_check/src/models/record.dart';
-import 'package:product_check/src/utils/component_utild.dart';
+import 'package:product_check/src/utils/component_utils.dart';
 
 class NFCReader extends StatefulWidget {
   NFCReader({Key key, this.title}) : super(key: key);
