@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:product_check/src/models/record.dart';
-import 'package:product_check/src/services/contract_service_interface.dart';
+import 'package:product_check/src/services/base_product_management_service.dart';
 import 'package:product_check/src/utils/component_utils.dart';
 
-import 'nfc_reader.dart';
+import '../dev/nfc_reader_mock.dart';
 
-class BlockchainPage extends StatefulWidget {
-  BlockchainPage({Key key, this.title, this.contractService}) : super(key: key);
+class CurrentOwnerPage extends StatefulWidget {
+  CurrentOwnerPage({Key key, this.title, this.productManagementService}) : super(key: key);
   final String title;
-  final ContractService contractService;
+  final BaseProductManagementService productManagementService;
 
   @override
-  _BlockchainPageState createState() => _BlockchainPageState(contractService);
+  _CurrentOwnerPageState createState() => _CurrentOwnerPageState(productManagementService);
 }
 
-class _BlockchainPageState extends State<BlockchainPage> {
-  final ContractService contractService;
+class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
+  final BaseProductManagementService contractService;
   String productOwner;
   Record nfcRecord;
   bool loading = false;
 
-  _BlockchainPageState(this.contractService);
+  _CurrentOwnerPageState(this.contractService);
 
   getTextInputData() async {
     setState(() {
@@ -37,9 +37,10 @@ class _BlockchainPageState extends State<BlockchainPage> {
   scanNFC() async {
     Record valueRed = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => NFCReader(title: "NFC page")
+        MaterialPageRoute(builder: (context) =>
+            // NFCReader(title: "NFC page")
             // comment above and uncomment below for testing screen
-            // NFCMockReader(title: "NFC page")
+            NFCMockReader(title: "NFC page")
             ));
     setState(() {
       productOwner = null;
@@ -143,7 +144,7 @@ class _BlockchainPageState extends State<BlockchainPage> {
                                 )),
                             SizedBox(
                                 height: ComponentUtils.screenHeightPercent(
-                                    context, 10)),
+                                    context, 2)),
                             new Text("Current product owner:",
                                 textAlign: TextAlign.left,
                                 style: new TextStyle(

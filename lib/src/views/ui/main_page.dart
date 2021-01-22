@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:product_check/src/models/record.dart';
-import 'package:product_check/src/services/contract_service_impl.dart';
-import 'package:product_check/src/services/contract_service_interface.dart';
-import 'package:product_check/src/views/ui/nfc_writer.dart';
+import 'package:product_check/src/services/web3_product_management_service.dart';
+import 'package:product_check/src/services/base_product_management_service.dart';
+import 'package:product_check/src/views/ui/contact_methods/ship_product_page.dart';
 import 'package:product_check/src/views/ui/nfc_reader.dart';
+import 'package:product_check/src/views/ui/nfc_writer.dart';
 
-import 'blockchain_requests_page.dart';
+import 'contact_methods/get_current_owner_page.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -21,9 +22,17 @@ class MainPage extends StatelessWidget {
             RaisedButton(
               textColor: Colors.white,
               color: Colors.blue,
-              child: Text('Go to blockchain requests'),
+              child: Text('Ship Product'),
               onPressed: () {
-                navigateToBlockchainPage(context);
+                navigateToShipProduct(context);
+              },
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text('Get Current Owner'),
+              onPressed: () {
+                navigateToCurrentOwnerPage(context);
               },
             ),
             RaisedButton(
@@ -49,22 +58,39 @@ class MainPage extends StatelessWidget {
   }
 }
 
-Future navigateToBlockchainPage(context) async {
-  String myAddress = "0xb88Ae3f85603bB13674ae34Be26Fbe1675ff2647";
+Future navigateToCurrentOwnerPage(context) async {
+  // String myAddress = "0xb88Ae3f85603bB13674ae34Be26Fbe1675ff2647";
+  String privateKey = "615a8c90655ba5ad2774e5597e7e8882ccf124fb9cf5a09f8f2b2ca570fd3c93";
   String contractAddress = "0x3d890b7D6E34220AAE2DDc9F1979D4ADDaDae9E5";
   String infuraURL =
       "https://kovan.infura.io/v3/c6d67a2b8ed4454283858d137db7593f";
   String contractName = "POMS";
-  ContractService contractService = new ContractServiceImpl(
-      myAddress, contractAddress, infuraURL, contractName);
+  BaseProductManagementService productManagementService =
+  new ProductManagementServiceImpl(privateKey,
+      contractAddress, infuraURL, contractName);
 
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => BlockchainPage(
+          builder: (context) =>
+              CurrentOwnerPage(
                 title: "Get Product Owner",
-                contractService: contractService,
+                productManagementService: productManagementService,
               )));
+}
+
+Future navigateToShipProduct(context) async {
+  String privateKey = "615a8c90655ba5ad2774e5597e7e8882ccf124fb9cf5a09f8f2b2ca570fd3c93";
+  String contractAddress = "0x3d890b7D6E34220AAE2DDc9F1979D4ADDaDae9E5";
+  String infuraURL =
+      "https://kovan.infura.io/v3/c6d67a2b8ed4454283858d137db7593f";
+  String contractName = "POMS";
+  BaseProductManagementService productManagementService =
+  new ProductManagementServiceImpl(privateKey,
+      contractAddress, infuraURL, contractName);
+  Navigator.push(context,
+      MaterialPageRoute(
+          builder: (context) => ShipProductPage(productManagementService)));
 }
 
 Future navigateToReadNFCPage(context) async {
@@ -82,7 +108,8 @@ Future navigateToWriteNFCPage(BuildContext context) async {
   Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => NFCWriter(
+          builder: (context) =>
+              NFCWriter(
                 title: "NFC page",
                 record: Record("212321", "22342643622"),
               )));
