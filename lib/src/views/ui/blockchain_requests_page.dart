@@ -84,13 +84,12 @@ class _BlockchainPageState extends State<BlockchainPage> {
                       fontWeight: FontWeight.bold)),
               Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child:
-                      new Text("Scan product and verify owner's address",
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.grey,
-                            fontFamily: 'ProductSans',
-                          ))),
+                  child: new Text("Scan product and verify owner's address",
+                      style: new TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                        fontFamily: 'ProductSans',
+                      ))),
               SizedBox(height: ComponentUtils.screenHeightPercent(context, 10)),
               Container(
                   decoration: BoxDecoration(
@@ -166,9 +165,6 @@ class _BlockchainPageState extends State<BlockchainPage> {
                                   ))
                           ]))),
               Expanded(child: Container()),
-              // Padding(
-              //     padding: const EdgeInsets.all(32.0),
-              //     child:
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -177,11 +173,12 @@ class _BlockchainPageState extends State<BlockchainPage> {
                     // minWidth: 200,
                     child: Image.asset(
                       'assets/scan_icon.png',
-                      height: 50,
+                      height: 40,
                     ),
                     onPressed: () => scanNFC(),
                     padding: EdgeInsets.all(20.0),
                     color: Color(0xFFfedf85),
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                   ),
