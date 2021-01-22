@@ -6,30 +6,32 @@ import 'package:product_check/src/utils/component_utils.dart';
 
 import '../dev/nfc_reader_mock.dart';
 
-class CurrentOwnerPage extends StatefulWidget {
-  CurrentOwnerPage(this.productManagementService);
+class ReceiveProductPage extends StatefulWidget {
+  ReceiveProductPage(this.productManagementService);
+
   final IProductManagementService productManagementService;
 
   @override
-  _CurrentOwnerPageState createState() => _CurrentOwnerPageState(productManagementService);
+  _ReceiveProductPageState createState() =>
+      _ReceiveProductPageState(productManagementService);
 }
 
-class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
+class _ReceiveProductPageState extends State<ReceiveProductPage> {
   final BaseProductManagementService contractService;
-  String productOwner;
+  String transactionHash;
   Record nfcRecord;
   bool loading = false;
 
-  _CurrentOwnerPageState(this.contractService);
+  _ReceiveProductPageState(this.contractService);
 
-  getTextInputData() async {
+  processReceiveMethod() async {
     setState(() {
       loading = true;
     });
     String result = await contractService
-        .getCurrentOwnerAddress(BigInt.parse(nfcRecord.productCode));
+        .receiveProduct(BigInt.parse(nfcRecord.productCode));
     setState(() {
-      productOwner = result;
+      transactionHash = result;
       loading = false;
     });
   }
@@ -37,27 +39,40 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
   scanNFC() async {
     Record valueRed = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>
-            // NFCReader(title: "NFC page")
-            // comment above and uncomment below for testing screen
-            NFCMockReader(title: "NFC page")
-            ));
+        MaterialPageRoute(
+            builder: (context) =>
+                // NFCReader(title: "NFC page")
+                // comment above and uncomment below for testing screen
+                NFCMockReader(title: "NFC page")));
     setState(() {
-      productOwner = null;
+      transactionHash = "";
       nfcRecord = valueRed;
     });
+  }
+
+  String getTextDependsOnRequest() {
+    if (transactionHash == null) {
+      return "An error occurred while processing your request";
+    } else if (transactionHash == "") {
+      return transactionHash;
+    } else {
+      return "Congratulation! You're the owner now!";
+    }
   }
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      productOwner = null;
+      transactionHash = "";
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final pageTitle = "Receive Product";
+    final pageDescription = "Scan product to become the owner!";
+    final buttonText = "RECEIVE";
     return Scaffold(
         backgroundColor: Color(0xFFfbfdfd),
         body: Padding(
@@ -78,14 +93,14 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                     onPressed: () => Navigator.pop(context),
                   )),
               SizedBox(height: ComponentUtils.screenHeightPercent(context, 4)),
-              new Text("Check product owner",
+              new Text(pageTitle,
                   style: new TextStyle(
                       fontSize: 22.0,
                       fontFamily: 'ProductSans',
                       fontWeight: FontWeight.bold)),
               Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: new Text("Scan product and verify owner's address",
+                  child: new Text(pageDescription,
                       style: new TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
@@ -102,7 +117,7 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                       borderRadius: BorderRadius.circular(15),
                       boxShadow:
                           ComponentUtils.boxShadow(color: Color(0xAA84d2f3))),
-                  height: ComponentUtils.screenHeightPercent(context, 45),
+                  height: ComponentUtils.screenHeightPercent(context, 40),
                   width: double.maxFinite,
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 30, 22, 50),
@@ -145,20 +160,13 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                             SizedBox(
                                 height: ComponentUtils.screenHeightPercent(
                                     context, 2)),
-                            new Text("Current product owner:",
-                                textAlign: TextAlign.left,
-                                style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: Color(0xFF515151),
-                                  fontFamily: 'ProductSans',
-                                )),
                             if (loading)
                               Padding(
                                   padding: const EdgeInsets.only(top: 20),
                                   child: Center(
                                       child: CircularProgressIndicator()))
                             else
-                              new Text(productOwner != null ? productOwner : "",
+                              new Text(getTextDependsOnRequest(),
                                   textAlign: TextAlign.left,
                                   style: new TextStyle(
                                     fontSize: 20.0,
@@ -166,6 +174,9 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                                   ))
                           ]))),
               Expanded(child: Container()),
+              // Padding(
+              //     padding: const EdgeInsets.all(32.0),
+              //     child:
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -174,12 +185,11 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                     // minWidth: 200,
                     child: Image.asset(
                       'assets/scan_icon.png',
-                      height: 40,
+                      height: 50,
                     ),
                     onPressed: () => scanNFC(),
                     padding: EdgeInsets.all(20.0),
                     color: Color(0xFFfedf85),
-                    elevation: 0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                   ),
@@ -187,13 +197,13 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                     height: 80,
                     minWidth: 230,
                     child: Text(
-                      "CHECK",
+                      buttonText,
                       style: TextStyle(
                         fontSize: 22.0,
                       ),
                     ),
                     onPressed:
-                        nfcRecord != null ? () => getTextInputData() : null,
+                        nfcRecord != null ? () => processReceiveMethod() : null,
                     padding: EdgeInsets.all(20.0),
                     color: Color(0xFF9ddbf5),
                     disabledColor: Color(0xFFE0E0E0),
