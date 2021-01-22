@@ -34,9 +34,9 @@ abstract class BaseProductManagementService implements IProductManagementService
         contract: contract, function: ethFunction, params: args);
   }
 
-  void submit(String functionName, List<dynamic> args) async {
+  Future<String> submit(String functionName, List<dynamic> args) async {
     final ethFunction = contract.function(functionName);
-    await ethClient.sendTransaction(
+    return await ethClient.sendTransaction(
         credentials,
         Transaction.callContract(
             contract: contract, function: ethFunction, parameters: args),
@@ -45,7 +45,7 @@ abstract class BaseProductManagementService implements IProductManagementService
 
   Future<String> getCurrentOwnerAddress(BigInt productCode);
 
-  void shipProduct(String receiverAddress, BigInt productCode);
+  Future<String> shipProduct(String receiverAddress, BigInt productCode);
 
-  void receiveProduct(BigInt productCode);
+  Future<String> receiveProduct(BigInt productCode);
 }

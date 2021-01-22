@@ -17,13 +17,13 @@ class ProductManagementServiceImpl extends BaseProductManagementService {
   }
 
   @override
-  void shipProduct(String receiverAddress, BigInt productCode) async {
-    submit("shipProduct",
+  Future<String> shipProduct(String receiverAddress, BigInt productCode) async {
+    return submit("shipProduct",
         [userAddress, EthereumAddress.fromHex(receiverAddress), productCode]);
   }
 
   @override
-  void receiveProduct(BigInt productCode) async {
-    submit("receiveProduct", [productCode, userAddress]);
+  Future<String> receiveProduct(BigInt productCode) async {
+    return submit("receiveProduct", [productCode, userAddress]);
   }
 }
