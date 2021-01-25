@@ -17,6 +17,7 @@ class MainPageRaisedButton extends StatelessWidget {
       child: RaisedButton(
         color: Colors.blue,
         child: new Text(buttonText,
+            textAlign: TextAlign.center,
             style: new TextStyle(
                 fontSize: 22.0,
                 color: Colors.white,
