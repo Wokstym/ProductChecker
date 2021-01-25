@@ -3,8 +3,7 @@ import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/services/base_product_management_service.dart';
 import 'package:product_check/src/services/product_management_interface.dart';
 import 'package:product_check/src/utils/component_utils.dart';
-
-import '../dev/nfc_reader_mock.dart';
+import 'package:product_check/src/views/ui/nfc_reader.dart';
 
 class ReceiveProductPage extends StatefulWidget {
   ReceiveProductPage(this.productManagementService);
@@ -39,11 +38,10 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
   scanNFC() async {
     Record valueRed = await Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                // NFCReader(title: "NFC page")
-                // comment above and uncomment below for testing screen
-                NFCMockReader(title: "NFC page")));
+        MaterialPageRoute(builder: (context) => NFCReader(title: "NFC page")
+            // comment above and uncomment below for testing screen
+            // NFCMockReader(title: "NFC page")
+            ));
     setState(() {
       transactionHash = "";
       nfcRecord = valueRed;
@@ -174,9 +172,6 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                                   ))
                           ]))),
               Expanded(child: Container()),
-              // Padding(
-              //     padding: const EdgeInsets.all(32.0),
-              //     child:
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -185,11 +180,12 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                     // minWidth: 200,
                     child: Image.asset(
                       'assets/scan_icon.png',
-                      height: 50,
+                      height: 40,
                     ),
                     onPressed: () => scanNFC(),
                     padding: EdgeInsets.all(20.0),
                     color: Color(0xFFfedf85),
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
                   ),

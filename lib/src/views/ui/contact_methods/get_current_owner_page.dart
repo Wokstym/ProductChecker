@@ -3,8 +3,7 @@ import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/services/base_product_management_service.dart';
 import 'package:product_check/src/services/product_management_interface.dart';
 import 'package:product_check/src/utils/component_utils.dart';
-
-import '../dev/nfc_reader_mock.dart';
+import 'package:product_check/src/views/ui/nfc_reader.dart';
 
 class CurrentOwnerPage extends StatefulWidget {
   CurrentOwnerPage(this.productManagementService);
@@ -38,9 +37,9 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
     Record valueRed = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) =>
-            // NFCReader(title: "NFC page")
+            NFCReader(title: "NFC page")
             // comment above and uncomment below for testing screen
-            NFCMockReader(title: "NFC page")
+            // NFCMockReader(title: "NFC page")
             ));
     setState(() {
       productOwner = null;
