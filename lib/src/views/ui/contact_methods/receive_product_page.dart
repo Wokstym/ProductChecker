@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:product_check/src/models/record.dart';
-import 'package:product_check/src/services/contract_service_interface.dart';
+import 'package:product_check/src/services/base_product_management_service.dart';
+import 'package:product_check/src/services/product_management_interface.dart';
 import 'package:product_check/src/utils/component_utils.dart';
+import 'package:product_check/src/views/ui/nfc_reader.dart';
 
-import 'nfc_reader.dart';
+class ReceiveProductPage extends StatefulWidget {
+  ReceiveProductPage(this.productManagementService);
 
-class BlockchainPage extends StatefulWidget {
-  BlockchainPage({Key key, this.title, this.contractService}) : super(key: key);
-  final String title;
-  final ContractService contractService;
+  final IProductManagementService productManagementService;
 
   @override
-  _BlockchainPageState createState() => _BlockchainPageState(contractService);
+  _ReceiveProductPageState createState() =>
+      _ReceiveProductPageState(productManagementService);
 }
 
-class _BlockchainPageState extends State<BlockchainPage> {
-  final ContractService contractService;
-  String productOwner;
+class _ReceiveProductPageState extends State<ReceiveProductPage> {
+  final BaseProductManagementService contractService;
+  String transactionHash;
   Record nfcRecord;
   bool loading = false;
 
-  _BlockchainPageState(this.contractService);
+  _ReceiveProductPageState(this.contractService);
 
-  getTextInputData() async {
+  processReceiveMethod() async {
     setState(() {
       loading = true;
     });
     String result = await contractService
-        .getCurrentOwnerAddress(BigInt.parse(nfcRecord.productCode));
+        .receiveProduct(BigInt.parse(nfcRecord.productCode));
     setState(() {
-      productOwner = result;
+      transactionHash = result;
       loading = false;
     });
   }
@@ -42,21 +43,34 @@ class _BlockchainPageState extends State<BlockchainPage> {
             // NFCMockReader(title: "NFC page")
             ));
     setState(() {
-      productOwner = null;
+      transactionHash = "";
       nfcRecord = valueRed;
     });
+  }
+
+  String getTextDependsOnRequest() {
+    if (transactionHash == null) {
+      return "An error occurred while processing your request";
+    } else if (transactionHash == "") {
+      return transactionHash;
+    } else {
+      return "Congratulation! You're the owner now!";
+    }
   }
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      productOwner = null;
+      transactionHash = "";
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final pageTitle = "Receive Product";
+    final pageDescription = "Scan product to become the owner!";
+    final buttonText = "RECEIVE";
     return Scaffold(
         backgroundColor: Color(0xFFfbfdfd),
         body: Padding(
@@ -77,14 +91,14 @@ class _BlockchainPageState extends State<BlockchainPage> {
                     onPressed: () => Navigator.pop(context),
                   )),
               SizedBox(height: ComponentUtils.screenHeightPercent(context, 4)),
-              new Text("Check product owner",
+              new Text(pageTitle,
                   style: new TextStyle(
                       fontSize: 22.0,
                       fontFamily: 'ProductSans',
                       fontWeight: FontWeight.bold)),
               Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: new Text("Scan product and verify owner's address",
+                  child: new Text(pageDescription,
                       style: new TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
@@ -101,7 +115,7 @@ class _BlockchainPageState extends State<BlockchainPage> {
                       borderRadius: BorderRadius.circular(15),
                       boxShadow:
                           ComponentUtils.boxShadow(color: Color(0xAA84d2f3))),
-                  height: ComponentUtils.screenHeightPercent(context, 45),
+                  height: ComponentUtils.screenHeightPercent(context, 40),
                   width: double.maxFinite,
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 30, 22, 50),
@@ -143,21 +157,14 @@ class _BlockchainPageState extends State<BlockchainPage> {
                                 )),
                             SizedBox(
                                 height: ComponentUtils.screenHeightPercent(
-                                    context, 10)),
-                            new Text("Current product owner:",
-                                textAlign: TextAlign.left,
-                                style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: Color(0xFF515151),
-                                  fontFamily: 'ProductSans',
-                                )),
+                                    context, 2)),
                             if (loading)
                               Padding(
                                   padding: const EdgeInsets.only(top: 20),
                                   child: Center(
                                       child: CircularProgressIndicator()))
                             else
-                              new Text(productOwner != null ? productOwner : "",
+                              new Text(getTextDependsOnRequest(),
                                   textAlign: TextAlign.left,
                                   style: new TextStyle(
                                     fontSize: 20.0,
@@ -186,13 +193,13 @@ class _BlockchainPageState extends State<BlockchainPage> {
                     height: 80,
                     minWidth: 230,
                     child: Text(
-                      "CHECK",
+                      buttonText,
                       style: TextStyle(
                         fontSize: 22.0,
                       ),
                     ),
                     onPressed:
-                        nfcRecord != null ? () => getTextInputData() : null,
+                        nfcRecord != null ? () => processReceiveMethod() : null,
                     padding: EdgeInsets.all(20.0),
                     color: Color(0xFF9ddbf5),
                     disabledColor: Color(0xFFE0E0E0),
