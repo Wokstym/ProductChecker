@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 class ComponentUtils {
   static double screenHeightPercent(BuildContext context, int percent) =>
       (MediaQuery.of(context).size.height / 100 * percent);
+  static double screenWidthPercent(BuildContext context, int percent) =>
+      (MediaQuery.of(context).size.width / 100 * percent);
 
   static List<BoxShadow> boxShadow({Color color}) {
     return [

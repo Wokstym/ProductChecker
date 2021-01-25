@@ -6,6 +6,7 @@ import 'package:product_check/src/views/ui/contact_methods/receive_product_page.
 import 'package:product_check/src/views/ui/contact_methods/ship_product_page.dart';
 import 'package:product_check/src/views/ui/nfc_reader.dart';
 import 'package:product_check/src/views/ui/nfc_writer.dart';
+import 'package:product_check/src/views/ui/widgets/main_page_button.dart';
 
 import 'contact_methods/get_current_owner_page.dart';
 
@@ -29,30 +30,15 @@ class MainPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.blue,
-              child: Text('Ship Product'),
-              onPressed: () {
-                navigateToShipProduct(context, productManagementService);
-              },
-            ),
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.blue,
-              child: Text('Receive Product'),
-              onPressed: () {
-                navigateToReceiveProduct(context, productManagementService);
-              },
-            ),
-            RaisedButton(
-              textColor: Colors.white,
-              color: Colors.blue,
-              child: Text('Get Current Owner'),
-              onPressed: () {
-                navigateToCurrentOwnerPage(context, productManagementService);
-              },
-            ),
+            MainPageRaisedButton(
+                buttonText: 'Ship Product',
+                pageToShow: ShipProductPage(productManagementService)),
+            MainPageRaisedButton(
+                buttonText: 'Receive Product',
+                pageToShow: ReceiveProductPage(productManagementService)),
+            MainPageRaisedButton(
+                buttonText: 'Current Owner',
+                pageToShow: CurrentOwnerPage(productManagementService)),
             RaisedButton(
               textColor: Colors.white,
               color: Colors.blue,
@@ -76,31 +62,6 @@ class MainPage extends StatelessWidget {
   }
 }
 
-void navigateToReceiveProduct(context, productManagementService) async {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ReceiveProductPage(
-                productManagementService,
-              )));
-}
-
-Future navigateToCurrentOwnerPage(context, productManagementService) async {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => CurrentOwnerPage(
-                productManagementService,
-              )));
-}
-
-Future navigateToShipProduct(context, productManagementService) async {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ShipProductPage(productManagementService)));
-}
-
 Future navigateToReadNFCPage(context) async {
   Record result = await Navigator.push(context,
       MaterialPageRoute(builder: (context) => NFCReader(title: "NFC page")));
@@ -112,7 +73,7 @@ Future navigateToReadNFCPage(context) async {
   }
 }
 
-Future navigateToWriteNFCPage(BuildContext context) async {
+Future navigateToWriteNFCPage(context) async {
   Navigator.push(
       context,
       MaterialPageRoute(
