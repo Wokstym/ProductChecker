@@ -1,75 +1,41 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/utils/component_utils.dart';
 
-class NFCReader extends StatefulWidget {
-  NFCReader({Key key, this.title}) : super(key: key);
+class NFCWriter extends StatefulWidget {
+  NFCWriter({Key key, this.title, @required this.record}) : super(key: key);
 
   final String title;
+  final Record record;
 
   @override
-  _NFCReaderState createState() => _NFCReaderState();
+  _NFCWriterState createState() => _NFCWriterState();
 }
 
-class _NFCReaderState extends State<NFCReader> {
+class _NFCWriterState extends State<NFCWriter> {
   bool _supportsNFC = false;
-  String _errorMessage;
-
-  StreamSubscription<NDEFMessage> _stream;
 
   @override
   void initState() {
     super.initState();
-    initNFC();
-  }
-
-  void initNFC() {
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
         _supportsNFC = isSupported;
       });
     });
-    scanNFC();
+    writeToNFCTag();
   }
 
-  void _handleError(String message) {
-    _stream?.cancel();
-    setState(() {
-      _errorMessage = message;
-      _stream = null;
-    });
-    scanNFC();
-  }
+  void writeToNFCTag() async {
+    List<NDEFRecord> records = [
+      NDEFRecord.plain(widget.record.getNFCFormattedString())
+    ];
+    NDEFMessage message = NDEFMessage.withRecords(records);
 
-  void _handlePayload(String payload) {
-    try {
-      Navigator.pop(context, Record.fromNFCPayload(payload));
-    } catch (e) {
-      setState(() {
-        _errorMessage = "Wrong nfc format";
-      });
-    }
-  }
-
-  void scanNFC() {
-    setState(() {
-      _stream = NFC.readNDEF().listen((NDEFMessage message) {
-        if (message.isEmpty) {
-          _handleError("Read empty NDEF message");
-          return;
-        }
-        _handlePayload(message.records.first.payload);
-      }, onError: (error) {
-        if (error is NFCUserCanceledSessionException) {
-          _handleError("User canceled");
-        } else if (error is NFCSessionTimeoutException) {
-          _handleError("Session timed out");
-        } else {
-          _handleError("Error: $error");
-        }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      NFC.writeNDEF(message, once: true).listen((NDEFTag tag) {
+        Navigator.pop(context);
       });
     });
   }
@@ -77,7 +43,6 @@ class _NFCReaderState extends State<NFCReader> {
   @override
   void dispose() {
     super.dispose();
-    _stream?.cancel();
   }
 
   @override
@@ -90,7 +55,8 @@ class _NFCReaderState extends State<NFCReader> {
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 children: [
-                  SizedBox(height: ComponentUtils.screenHeightPercent(context, 20)),
+                  SizedBox(
+                      height: ComponentUtils.screenHeightPercent(context, 20)),
                   Padding(
                       padding: EdgeInsets.all(16),
                       child: Container(
@@ -98,7 +64,8 @@ class _NFCReaderState extends State<NFCReader> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: ComponentUtils.boxShadow()),
-                          height: ComponentUtils.screenHeightPercent(context, 40),
+                          height:
+                              ComponentUtils.screenHeightPercent(context, 50),
                           child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
@@ -119,13 +86,25 @@ class _NFCReaderState extends State<NFCReader> {
                                       fontFamily: 'ProductSans',
                                     )),
                                 Expanded(child: Container()),
-                                if (_errorMessage != null)
-                                  Center(
-                                      child: new Text(
-                                    _errorMessage,
-                                    style: TextStyle(color: Colors.red),
-                                  )),
-                                SizedBox(height: 5),
+                                Column(children: [
+                                  new Text(
+                                      "Manufacturer: " +
+                                          widget.record.manufacturerCode,
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                        fontSize: 18.0,
+                                        fontFamily: 'ProductSans',
+                                      )),
+                                  new Text(
+                                      "Product code: " +
+                                          widget.record.productCode,
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                        fontSize: 18.0,
+                                        fontFamily: 'ProductSans',
+                                      ))
+                                ]),
+                                SizedBox(height: 10),
                               ])))),
                   Expanded(child: Container()),
                   Padding(
@@ -151,5 +130,4 @@ class _NFCReaderState extends State<NFCReader> {
       ),
     );
   }
-
 }

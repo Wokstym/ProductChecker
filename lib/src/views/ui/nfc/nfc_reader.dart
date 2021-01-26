@@ -1,41 +1,75 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/utils/component_utils.dart';
 
-class NFCWriter extends StatefulWidget {
-  NFCWriter({Key key, this.title, @required this.record}) : super(key: key);
+class NFCReader extends StatefulWidget {
+  NFCReader({Key key, this.title}) : super(key: key);
 
   final String title;
-  final Record record;
 
   @override
-  _NFCWriterState createState() => _NFCWriterState();
+  _NFCReaderState createState() => _NFCReaderState();
 }
 
-class _NFCWriterState extends State<NFCWriter> {
+class _NFCReaderState extends State<NFCReader> {
   bool _supportsNFC = false;
+  String _errorMessage;
+
+  StreamSubscription<NDEFMessage> _stream;
 
   @override
   void initState() {
     super.initState();
+    initNFC();
+  }
+
+  void initNFC() {
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
         _supportsNFC = isSupported;
       });
     });
-    writeToNFCTag();
+    scanNFC();
   }
 
-  void writeToNFCTag() async {
-    List<NDEFRecord> records = [
-      NDEFRecord.plain(widget.record.getNFCFormattedString())
-    ];
-    NDEFMessage message = NDEFMessage.withRecords(records);
+  void _handleError(String message) {
+    _stream?.cancel();
+    setState(() {
+      _errorMessage = message;
+      _stream = null;
+    });
+    scanNFC();
+  }
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      NFC.writeNDEF(message, once: true).listen((NDEFTag tag) {
-        Navigator.pop(context);
+  void _handlePayload(String payload) {
+    try {
+      Navigator.pop(context, Record.fromNFCPayload(payload));
+    } catch (e) {
+      setState(() {
+        _errorMessage = "Wrong nfc format";
+      });
+    }
+  }
+
+  void scanNFC() {
+    setState(() {
+      _stream = NFC.readNDEF().listen((NDEFMessage message) {
+        if (message.isEmpty) {
+          _handleError("Read empty NDEF message");
+          return;
+        }
+        _handlePayload(message.records.first.payload);
+      }, onError: (error) {
+        if (error is NFCUserCanceledSessionException) {
+          _handleError("User canceled");
+        } else if (error is NFCSessionTimeoutException) {
+          _handleError("Session timed out");
+        } else {
+          _handleError("Error: $error");
+        }
       });
     });
   }
@@ -43,6 +77,7 @@ class _NFCWriterState extends State<NFCWriter> {
   @override
   void dispose() {
     super.dispose();
+    _stream?.cancel();
   }
 
   @override
@@ -55,7 +90,8 @@ class _NFCWriterState extends State<NFCWriter> {
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 children: [
-                  SizedBox(height: ComponentUtils.screenHeightPercent(context, 20)),
+                  SizedBox(
+                      height: ComponentUtils.screenHeightPercent(context, 20)),
                   Padding(
                       padding: EdgeInsets.all(16),
                       child: Container(
@@ -63,7 +99,8 @@ class _NFCWriterState extends State<NFCWriter> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: ComponentUtils.boxShadow()),
-                          height: ComponentUtils.screenHeightPercent(context, 50),
+                          height:
+                              ComponentUtils.screenHeightPercent(context, 40),
                           child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 16.0),
@@ -84,25 +121,13 @@ class _NFCWriterState extends State<NFCWriter> {
                                       fontFamily: 'ProductSans',
                                     )),
                                 Expanded(child: Container()),
-                                Column(children: [
-                                  new Text(
-                                      "Manufacturer: " +
-                                          widget.record.manufacturerCode,
-                                      textAlign: TextAlign.center,
-                                      style: new TextStyle(
-                                        fontSize: 18.0,
-                                        fontFamily: 'ProductSans',
-                                      )),
-                                  new Text(
-                                      "Product code: " +
-                                          widget.record.productCode,
-                                      textAlign: TextAlign.center,
-                                      style: new TextStyle(
-                                        fontSize: 18.0,
-                                        fontFamily: 'ProductSans',
-                                      ))
-                                ]),
-                                SizedBox(height: 10),
+                                if (_errorMessage != null)
+                                  Center(
+                                      child: new Text(
+                                    _errorMessage,
+                                    style: TextStyle(color: Colors.red),
+                                  )),
+                                SizedBox(height: 5),
                               ])))),
                   Expanded(child: Container()),
                   Padding(
