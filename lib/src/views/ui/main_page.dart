@@ -139,7 +139,7 @@ class _MainPageState extends State<MainPage> {
                                   pageToShow: () => CurrentOwnerPage(
                                       productManagementService)),
                               MainPageRaisedButton(
-                                buttonText: 'Go to write NFC page',
+                                buttonText: 'Save data to NFC',
                                 pageToShow: () => RecordFormPage(),
                               ),
                             ]),
