@@ -28,7 +28,20 @@ class _MainPageState extends State<MainPage> {
     String privateKey = await SharedPreferencesHelper.getStringPreference(
         SharedPreferencesHelper.PRIVATE_KEY);
 
-    print(privateKey);
+    trySettingServiceWith(privateKey);
+  }
+
+  void refreshState() async {
+    String privateKey = await SharedPreferencesHelper.getStringPreference(
+        SharedPreferencesHelper.PRIVATE_KEY);
+
+    setState(() {
+      badPrivateKey = false;
+      trySettingServiceWith(privateKey);
+    });
+  }
+
+  void trySettingServiceWith(String privateKey) {
     try {
       productManagementService = new ProductManagementServiceImpl(
           privateKey,
@@ -40,26 +53,6 @@ class _MainPageState extends State<MainPage> {
     } catch (e) {
       badPrivateKey = true;
     }
-  }
-
-  void refreshState() async {
-    String privateKey = await SharedPreferencesHelper.getStringPreference(
-        SharedPreferencesHelper.PRIVATE_KEY);
-
-    setState(() {
-      badPrivateKey = false;
-      try {
-        productManagementService = new ProductManagementServiceImpl(
-            privateKey,
-            "0x3d890b7D6E34220AAE2DDc9F1979D4ADDaDae9E5", // contractAddress
-            "https://kovan.infura.io/v3/c6d67a2b8ed4454283858d137db7593f",
-            //infuraURL
-            "POMS" // contractName
-            );
-      } catch (e) {
-        badPrivateKey = true;
-      }
-    });
   }
 
   @override

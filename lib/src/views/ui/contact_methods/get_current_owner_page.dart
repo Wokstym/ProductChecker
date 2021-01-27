@@ -3,7 +3,7 @@ import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/services/base_product_management_service.dart';
 import 'package:product_check/src/services/product_management_interface.dart';
 import 'package:product_check/src/utils/component_utils.dart';
-import 'file:///C:/Users/wokstym/Desktop/Projekty/wlasne/first_app/lib/src/views/ui/nfc/nfc_reader.dart';
+import 'package:product_check/src/views/ui/nfc/nfc_reader.dart';
 
 class CurrentOwnerPage extends StatefulWidget {
   CurrentOwnerPage(this.productManagementService);
