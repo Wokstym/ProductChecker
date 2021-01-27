@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/utils/component_utils.dart';

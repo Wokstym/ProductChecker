@@ -3,7 +3,7 @@ import 'package:product_check/src/models/record.dart';
 import 'package:product_check/src/services/base_product_management_service.dart';
 import 'package:product_check/src/services/product_management_interface.dart';
 import 'package:product_check/src/utils/component_utils.dart';
-import 'package:product_check/src/views/ui/nfc_reader.dart';
+import 'package:product_check/src/views/ui/nfc/nfc_reader.dart';
 
 class ReceiveProductPage extends StatefulWidget {
   ReceiveProductPage(this.productManagementService);
@@ -77,7 +77,6 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
             padding: const EdgeInsets.all(32.0),
             child: Column(children: [
               SizedBox(height: ComponentUtils.screenHeightPercent(context, 2)),
-              //I wanted this button little bit smaller but it is retarded and i makes icon smaller fuck
               new SizedBox(
                   width: 40.0,
                   height: 40.0,
@@ -111,7 +110,6 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [Colors.blueAccent, Color(0xFF84d2f3)]),
-                      // color: Color(0xFF84d2f3),
                       borderRadius: BorderRadius.circular(15),
                       boxShadow:
                           ComponentUtils.boxShadow(color: Color(0xAA84d2f3))),
@@ -155,9 +153,7 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                                   fontSize: 22.0,
                                   fontFamily: 'ProductSans',
                                 )),
-                            SizedBox(
-                                height: ComponentUtils.screenHeightPercent(
-                                    context, 2)),
+                            Expanded(child: Container()),
                             if (loading)
                               Padding(
                                   padding: const EdgeInsets.only(top: 20),
@@ -177,7 +173,6 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                 children: [
                   MaterialButton(
                     height: 80,
-                    // minWidth: 200,
                     child: Image.asset(
                       'assets/scan_icon.png',
                       height: 40,
