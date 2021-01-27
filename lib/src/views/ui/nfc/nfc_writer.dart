@@ -56,7 +56,7 @@ class _NFCWriterState extends State<NFCWriter> {
               child: Column(
                 children: [
                   SizedBox(
-                      height: ComponentUtils.screenHeightPercent(context, 20)),
+                      height: ComponentUtils.screenHeightPercent(context, 12)),
                   Padding(
                       padding: EdgeInsets.all(16),
                       child: Container(
@@ -73,8 +73,8 @@ class _NFCWriterState extends State<NFCWriter> {
                                 Center(
                                     child: Image.asset(
                                   'assets/scan_icon.png',
-                                  height: 200,
-                                  width: 200,
+                                  height:  ComponentUtils.screenHeightPercent(context, 20),
+                                  width:  ComponentUtils.screenHeightPercent(context, 20),
                                 )),
                                 new Text(
                                     !_supportsNFC

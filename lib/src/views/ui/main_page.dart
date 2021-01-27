@@ -103,7 +103,8 @@ class _MainPageState extends State<MainPage> {
                                 context, 12)),
                         Image.asset(
                           'assets/purple_etherum_logo.png',
-                          height: 150,
+                          height:  ComponentUtils.screenHeightPercent(
+                            context, 17),
                         ),
                         SizedBox(
                             height: ComponentUtils.screenHeightPercent(
