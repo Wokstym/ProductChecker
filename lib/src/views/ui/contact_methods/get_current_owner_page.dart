@@ -182,7 +182,7 @@ class _CurrentOwnerPageState extends State<CurrentOwnerPage> {
                   ),
                   MaterialButton(
                     height: 80,
-                    minWidth: 230,
+                    minWidth:  ComponentUtils.screenHeightPercent(context, 30),
                     child: Text(
                       "CHECK",
                       style: TextStyle(

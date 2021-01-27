@@ -108,8 +108,8 @@ class _NFCReaderState extends State<NFCReader> {
                                 Center(
                                     child: Image.asset(
                                   'assets/scan_icon.png',
-                                  height: 200,
-                                  width: 200,
+                                  height:  ComponentUtils.screenHeightPercent(context, 20),
+                                  width:  ComponentUtils.screenHeightPercent(context, 20),
                                 )),
                                 new Text(
                                     !_supportsNFC

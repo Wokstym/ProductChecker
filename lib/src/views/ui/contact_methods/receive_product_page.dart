@@ -186,7 +186,7 @@ class _ReceiveProductPageState extends State<ReceiveProductPage> {
                   ),
                   MaterialButton(
                     height: 80,
-                    minWidth: 230,
+                    minWidth: ComponentUtils.screenHeightPercent(context, 30),
                     child: Text(
                       buttonText,
                       style: TextStyle(

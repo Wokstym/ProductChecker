@@ -119,7 +119,7 @@ class _ShipProductPageState extends State<ShipProductPage> {
                           )),
                       SizedBox(
                           height:
-                              ComponentUtils.screenHeightPercent(context, 4)),
+                              ComponentUtils.screenHeightPercent(context, 2)),
                       new Text(pageTitle,
                           style: new TextStyle(
                               fontSize: 22.0,
@@ -133,9 +133,7 @@ class _ShipProductPageState extends State<ShipProductPage> {
                                 color: Colors.grey,
                                 fontFamily: 'ProductSans',
                               ))),
-                      SizedBox(
-                          height:
-                              ComponentUtils.screenHeightPercent(context, 5)),
+                      Expanded(child: Container()),
                       Container(
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -192,8 +190,8 @@ class _ShipProductPageState extends State<ShipProductPage> {
                                         )),
                                     SizedBox(
                                         height:
-                                            ComponentUtils.screenHeightPercent(
-                                                context, 10)),
+                                        ComponentUtils.screenHeightPercent(
+                                            context, 3)),
                                     TextFormField(
                                         keyboardType: TextInputType.text,
                                         controller: receiverAddressController,
@@ -230,7 +228,9 @@ class _ShipProductPageState extends State<ShipProductPage> {
                                             fontFamily: 'ProductSans',
                                           ))
                                   ]))),
-                      Expanded(child: Container()),
+                      SizedBox(
+                          height:
+                          ComponentUtils.screenHeightPercent(context, 6)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -249,7 +249,7 @@ class _ShipProductPageState extends State<ShipProductPage> {
                           ),
                           MaterialButton(
                             height: 80,
-                            minWidth: 230,
+                            minWidth: ComponentUtils.screenHeightPercent(context, 30),
                             child: Text(
                               buttonText,
                               style: TextStyle(

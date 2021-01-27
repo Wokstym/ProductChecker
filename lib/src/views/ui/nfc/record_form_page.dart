@@ -74,7 +74,7 @@ class _RecordFormPageState extends State<RecordFormPage> {
                             fontFamily: 'ProductSans',
                           ))),
                   SizedBox(
-                      height: ComponentUtils.screenHeightPercent(context, 13)),
+                      height: ComponentUtils.screenHeightPercent(context, 8)),
                   Container(
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
