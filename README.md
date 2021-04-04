@@ -11,7 +11,10 @@
 <br/>
 <br/>
 
-TODO description
+Main goal of ProductChecker is to manage product ownership in post supply chain (when the product leaves shop). Due to the fact, that Product Checker is built as a smart contract on ethereum blockchain, it is impossible to counterfeit given product, or to for example cheat while reselling item to another person. It can be used whereever there is a huge resell market and high posibility of counterfeiting items (for example streetwear market).
+
+Backend is built using Solidity and deployed to Ethereum Kovan testing network using Infura
+Frontend is built with flutter
 
 * Producer writes productCode and manufacturerCode to nfc tag through app
 * Supplier or client can scan tag and verify using blockchain if product isn't fake
