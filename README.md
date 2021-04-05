@@ -3,37 +3,53 @@
 <p align="center">
 
 <img src="https://img.shields.io/badge/Flutter-darkblue" />
+<img src="https://img.shields.io/badge/blockchain-darkred" />
 <img src="https://img.shields.io/badge/web3dart-2.0.0-blue" />
-<img src="https://img.shields.io/badge/nfc_in_flutter-2.0.5-red" />
+<img src="https://img.shields.io/badge/NFC_in_flutter-2.0.5-red" />
 <img src="https://img.shields.io/badge/http-0.12.2-yellow" />
 
 <br/>
 <br/>
 <br/>
 
-Main goal of ProductChecker is to manage product ownership in post supply chain (when the product leaves shop). Due to the fact, that Product Checker is built as a smart contract on ethereum blockchain, it is impossible to counterfeit given product, or to for example cheat while reselling item to another person. It can be used whereever there is a huge resell market and high posibility of counterfeiting items (for example streetwear market).
+ProductChecker is the mobile app for managing product ownership in post supply chain (when the product leaves shop). 
 
-Backend is built using Solidity and deployed to Ethereum Kovan testing network using Infura
-Frontend is built with flutter
+It's built as a **smart contract on ethereum blockchain**, which means it's impossible to counterfeit given product, or to for example cheat while reselling item to another person.
 
-* Producer writes productCode and manufacturerCode to nfc tag through app
-* Supplier or client can scan tag and verify using blockchain if product isn't fake
+It can be used whereever there is a huge resell market and high posibility of counterfeiting items (for example streetwear market).
+
+### Technologies stack
+
+- Backend
+  - Contract is built using Solidity. [Json version](https://github.com/Wokstym/ProductChecker/blob/Readme/assets/ABI.json)
+  - Ethereum Kovan testing network is used for hosting our contact
+  - Infura for deploying contract to blockchain network
+- Frontend
+  - Mobile app is built with flutter
+  - Web3dart for making calls to Ethereum Kovan network.
+
+### Use cases
+
+* Producer writes productCode and manufacturerCode to NFC tag located on the product through the app
+* Supplier or client can 
+  * scan NFC tag to verify if product isn't fake (check the current owner, productCode)
+  * ship product to the buyer using his/her Ethereum wallet key. 
+  * receive product by scanning its' NFC tag
+
+### Demo
 
 <p align="center">
-
 <img src="res/presentation.gif" alt="" data-canonical-src="res/presentation.gif" width="37.5%" height="37.5%" />
 </p>
 
-
-
-## Running
+### Running
 
 1. Install your phone drivers
 2. Connect your phone with usb debugging enabled 
 3. Run `flutter run` in terminal in main folder
 
 
-## Contributors ✨
+### Contributors ✨
 
 <table>
   <tr>
