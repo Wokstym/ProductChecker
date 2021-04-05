@@ -9,8 +9,6 @@
 <img src="https://img.shields.io/badge/http-0.12.2-yellow" />
 
 <br/>
-<br/>
-<br/>
 
 ProductChecker is the mobile app for managing product ownership in post supply chain (when the product leaves shop). 
 
